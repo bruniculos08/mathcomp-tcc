@@ -5,3 +5,12 @@ Possíveis contribuições do TCC de Bruno Rafael dos Santos para a biblioteca m
 - Autor: Bruno Rafael dos Santos
 - Licença: [MIT License](LICENSE)
 - Versões de Coq compatíveis: 8.19.2 em diante
+
+### Comandos para compilação e instalação:
+    
+``` shell
+eval `opam config env` # caso a biblioteca mathcomp esteja localizada na instalação do Coq feita por meio do Opam
+cd mathcomp-contributions
+make
+make install
+```
