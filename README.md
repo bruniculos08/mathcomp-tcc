@@ -3,7 +3,7 @@ Possíveis contribuições do TCC de Bruno Rafael dos Santos para a biblioteca m
 
 ### Informações:
 - Autor: Bruno Rafael dos Santos
-- Versões de Coq compatíveis: 8.19.2 em diante
+- Versões de Coq utilizada: 8.19.2
 - Licença: [MIT License](LICENSE)
 
 ### Comandos para compilação e instalação:
