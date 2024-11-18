@@ -6,7 +6,7 @@ Set Implicit Arguments.
 Unset Strict Implicit.
 Unset Printing Implicit Defensive.
 
-(* Minhas possíveis contribuições: *)
+(* Possíveis contribuições relacionadas ao símbolo de Legendre: *)
 
 Definition resz_quad p a := has (fun i => ((i * i)%:Z  == a %[mod p])%Z) (iota 0 `|p|).
 
