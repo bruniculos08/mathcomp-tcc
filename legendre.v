@@ -46,25 +46,28 @@ apply Bool.iff_reflect. split.
         rewrite modz_ge0 //.
     rewrite -PoszM !modz_nat => Hx.
     injection Hx => {}Hx.
-    pose x' : 'I_p.-1.+1 := Ordinal (ltn_pmod `|(x %% p)%Z| (ltn0Sn _)).
-    have Hp : p = p.-1.+1.
-        admit.
-    rewrite Hp in Hi.
-    move: (Hi x').
-    
-
-        
-         
-        
-        
-    
-        
-        
-    
-
-
-(* ... to do... *)
-Abort.
+    pose x' : 'Z_p := inZp `|x %% p|.
+    have x'E: x' = (`|(x %% p)%Z| %% p)%N :> nat.
+        rewrite /x' /= (Zp_cast _); last first. 
+            by rewrite prime_gt1.
+        by [].
+    move: pP pL2 pn0 pDa resq Hx Hi x' x'E.
+    case: p => // p; case: p => // p. 
+    move=> pP pL2 pn0 pDa resq Hx Hi x' x'E.
+    move: (Hi x') => /eqP Hnx. exfalso. apply Hnx.
+    rewrite PoszM x'E.
+    rewrite -modz_nat modzMml modzMmr.
+    rewrite -PoszM.
+    rewrite -(modz_mod a).
+    rewrite -(@gez0_abs (a %% p.+2)%Z); last first.
+        rewrite modz_ge0 //.
+    rewrite !modz_nat.
+    congr (Posz _). apply Hx.
+case resq: (resz_quad p a) => // /= _.
+    move: resq. rewrite /resz_quad => /hasP /= [x].
+    rewrite mem_iota add0n PoszM => /andP [xL0 xLp] /eqP xE.
+    exists x. by rewrite exprSz -exprnP GRing.expr1.
+Qed.
 
 Lemma legendre_symbnP {p : int} (pL2 : (2 < p)%R) (pP : primez.primez p) (a : int):
     reflect (~ exists x, x^2 = a %[mod p]) ((legendre_symb pL2 pP a) == -1).
