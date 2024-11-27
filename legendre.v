@@ -72,8 +72,29 @@ Qed.
 Lemma legendre_symbnP {p : int} (pL2 : (2 < p)%R) (pP : primez.primez p) (a : int):
     reflect (~ exists x, x^2 = a %[mod p]) ((legendre_symb pL2 pP a) == -1).
 Proof.
-(* ... to do... *)
-Abort.
+move: pP pL2.
+case: p => // p; case: p => // p; case: p => // p pP pL2 /=.
+apply Bool.iff_reflect. split; last first.
+    move=> /eqP lsE /legendre_symbP Hx.
+    move: (Hx pL2 pP).
+    case: (p.+2 %| a)%Z.
+    rewrite lsE //=.
+    rewrite lsE //=.
+case pDa: (p.+2 %| a)%Z.
+    rewrite -(GRing.subr0 a) -eqz_mod_dvd in pDa.
+    move=> Hx.
+    exfalso. apply Hx.
+    exists a. rewrite exprSz -exprnP GRing.expr1.
+    rewrite -modzMml.
+    move: pDa => /eqP ->.
+    by rewrite mod0z GRing.mul0r mod0z.
+rewrite /legendre_symb pDa.
+case resq: (resz_quad p.+2 a) => // Hx.
+exfalso. apply Hx.
+move: resq. rewrite /resz_quad [X in (iota 0 X)]/= => /hasP [x] _.
+rewrite PoszM => /eqP <-.
+by exists x; rewrite exprSz -exprnP GRing.expr1.
+Qed.
 
 Lemma eulerz_criterion {p : int} (pL2 : (2 < p)%R) (pP : primez.primez p) (a : int):
     (a ^ ((p - 1) %/ 2)%Z = (legendre_symb pL2 pP a) %[mod p])%Z.
