@@ -14,6 +14,64 @@ Definition legendre_symb {p : int} (pL2 : (2 < p)%R) (pP : primez.primez p) (a :
     if (p %| a)%Z then 0%Z
     else if (resz_quad p a) then 1%Z else (-1)%Z.
 
+Lemma legendre_symbP {p : int} (pL2 : (2 < p)%R) (pP : primez.primez p) (a : int):
+    reflect (exists x, x^2 = a %[mod p]) (if (p %| a)%Z then (((legendre_symb pL2 pP a) == 0)) else ((legendre_symb pL2 pP a) == 1)).
+Proof.
+move: pL2 pP.
+case: p => // p pL2 pP.
+have pn0: (p != 0%R).
+    move: pL2 pP.
+    by case: p.
+rewrite /legendre_symb.
+case pDa : (p %| a)%Z.
+    move: pDa => /dvdz_mod0P pDa.
+    rewrite eqxx /=.
+    apply ReflectT. exists a.
+    rewrite exprSz -exprnP GRing.expr1.
+    rewrite -modzMml -modzMmr !pDa GRing.mul0r mod0z //.
+apply Bool.iff_reflect. split.
+    move=> [x Hx]. case resq: (resz_quad p%Z a) => //.
+    have Hi: forall i : 'I_p, (i * i)%Z != a %[mod p].
+        move=> i.
+        move: resq => /hasP resq. apply/eqP => Hi.
+        apply resq. exists (nat_of_ord i).
+        rewrite mem_iota /= add0n. by case i.
+        apply/eqP. apply Hi.
+    move: Hx. rewrite exprSz -exprnP GRing.expr1.
+    rewrite -modzMml -modzMmr.
+    rewrite -(modz_mod a).
+    rewrite -(@gez0_abs (x %% p)%Z); last first.
+        rewrite modz_ge0 //. 
+    rewrite -(@gez0_abs (a %% p)%Z); last first.
+        rewrite modz_ge0 //.
+    rewrite -PoszM !modz_nat => Hx.
+    injection Hx => {}Hx.
+    pose x' : 'I_p.-1.+1 := Ordinal (ltn_pmod `|(x %% p)%Z| (ltn0Sn _)).
+    have Hp : p = p.-1.+1.
+        admit.
+    rewrite Hp in Hi.
+    move: (Hi x').
+    
+
+        
+         
+        
+        
+    
+        
+        
+    
+
+
+(* ... to do... *)
+Abort.
+
+Lemma legendre_symbnP {p : int} (pL2 : (2 < p)%R) (pP : primez.primez p) (a : int):
+    reflect (~ exists x, x^2 = a %[mod p]) ((legendre_symb pL2 pP a) == -1).
+Proof.
+(* ... to do... *)
+Abort.
+
 Lemma eulerz_criterion {p : int} (pL2 : (2 < p)%R) (pP : primez.primez p) (a : int):
     (a ^ ((p - 1) %/ 2)%Z = (legendre_symb pL2 pP a) %[mod p])%Z.
 Proof.
