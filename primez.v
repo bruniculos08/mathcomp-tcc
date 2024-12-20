@@ -97,9 +97,6 @@ apply /andP. split.
     by rewrite -pabs.
 Qed.
 
-(*  A prova do seguinte lema se baseou na prova do lema      
-"prime_modn_expSn" disponível em: https://github.com/thery/
-mathcomp-extra/blob/640bc1a2634a609b8fd8a7c2023654ac3d9bc0a8/rsa.v *)
 Lemma primez_modn_expSn (p n : int) : 
 (0 <= n)%R -> primez.primez p -> ((n + 1) ^ p)%R = ((n ^ p) + 1)%R %[mod p].
 Proof.
@@ -112,9 +109,6 @@ rewrite add1n addn1 addn0.
 by apply prime_modn_expSn.
 Qed.
 
-(*  A prova do seguinte lema se baseou na prova do lema 
-"fermat_little" disponível em: https://github.com/thery/
-mathcomp-extra/blob/640bc1a2634a609b8fd8a7c2023654ac3d9bc0a8/rsa.v  *)
 Lemma fermatz_little a p : primez p -> a ^ p = a %[mod p].
 Proof.
 case: p => // p.
